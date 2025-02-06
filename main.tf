@@ -1,14 +1,16 @@
-locals {
-  postgres_user     = data.kubernetes_secret.fastfood_secret.data["POSTGRES_USER"]
-  postgres_password = data.kubernetes_secret.fastfood_secret.data["POSTGRES_PASSWORD"]
-}
-
 resource "kubernetes_secret" "fastfood_secret" {
   metadata {
     name = "fastfood-secret"
   }
 
   data = {
+    MONGO_DB_URI                = var.mongodb_uri
+    POSTGRES_USER               = var.postgres_user
+    POSTGRES_PASSWORD           = var.postgres_password
+    FASTFOOD_MAIL_PASSWORD      = var.fastfood_mail_password
+    PAYMENT_API_HOST            = "https://${data.aws_api_gateway_rest_api.eks_api.id}.execute-api.us-east-1.amazonaws.com/prod/payments"
+    GATEWAY_API_HOST            = "https://${data.aws_api_gateway_rest_api.eks_api.id}.execute-api.us-east-1.amazonaws.com/prod"
+    PERSON_API_URL              = "https://${data.aws_api_gateway_rest_api.eks_api.id}.execute-api.us-east-1.amazonaws.com/prod"
     ORDER_DATABASE_URL          = "jdbc:postgresql://${aws_db_instance.rds_order.endpoint}/${aws_db_instance.rds_order.db_name}"
     PERSON_SERVICE_DATABASE_URL = "jdbc:postgresql://${aws_db_instance.rds_person.endpoint}/${aws_db_instance.rds_person.db_name}"
   }
@@ -27,8 +29,8 @@ resource "aws_db_instance" "rds_order" {
   instance_class       = "db.t3.micro"
   allocated_storage    = 20
   db_name              = "postgres"
-  username             = local.postgres_user
-  password             = local.postgres_password
+  username             = var.postgres_user
+  password             = var.postgres_password
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
   db_subnet_group_name = aws_db_subnet_group.rds_subnet.name
   multi_az             = false
@@ -46,8 +48,8 @@ resource "aws_db_instance" "rds_person" {
   instance_class       = "db.t3.micro"
   allocated_storage    = 20
   db_name              = "postgres"
-  username             = local.postgres_user
-  password             = local.postgres_password
+  username             = var.postgres_user
+  password             = var.postgres_password
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
   db_subnet_group_name = aws_db_subnet_group.rds_subnet.name
   multi_az             = false

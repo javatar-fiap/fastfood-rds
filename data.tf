@@ -52,8 +52,6 @@ data "aws_subnet" "eks_private_subnet2" {
   }
 }
 
-data "kubernetes_secret" "fastfood_secret" {
-  metadata {
-    name = "fastfood-secret"
-  }
+data "aws_api_gateway_rest_api" "eks_api" {
+  name = "EKS_API_Gateway"
 }
