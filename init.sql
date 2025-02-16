@@ -212,9 +212,7 @@ CREATE TABLE public.customer_order (
                                        updated_at timestamp(6) NULL,
                                        status varchar(255) NULL,
                                        CONSTRAINT customer_order_pkey PRIMARY KEY (id),
-                                       CONSTRAINT customer_order_status_check CHECK (((status)::text = ANY ((ARRAY['IN_CREATION'::character varying, 'AWAITING_PAYMENT'::character varying, 'RECEIVED'::character varying, 'IN_PREPARATION'::character varying, 'READY'::character varying, 'FINISHED'::character varying, 'CANCELLED'::character varying])::text[]))),
-	CONSTRAINT fkf9abd30bhiqvugayxlpq8ryq9 FOREIGN KEY (customer_id) REFERENCES public.customer(id),
-	CONSTRAINT fkitjd93c2mdbpsyiwdcjgmws52 FOREIGN KEY (collaborator_id) REFERENCES public.collaborator(id)
+                                       CONSTRAINT customer_order_status_check CHECK (((status)::text = ANY ((ARRAY['IN_CREATION'::character varying, 'AWAITING_PAYMENT'::character varying, 'RECEIVED'::character varying, 'IN_PREPARATION'::character varying, 'READY'::character varying, 'FINISHED'::character varying, 'CANCELLED'::character varying])::text[])))
 );
 
 

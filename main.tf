@@ -10,7 +10,7 @@ resource "kubernetes_secret" "fastfood_secret" {
     FASTFOOD_MAIL_PASSWORD      = var.fastfood_mail_password
     PAYMENT_API_HOST            = "https://${data.aws_api_gateway_rest_api.eks_api.id}.execute-api.us-east-1.amazonaws.com/prod/payments"
     GATEWAY_API_HOST            = "https://${data.aws_api_gateway_rest_api.eks_api.id}.execute-api.us-east-1.amazonaws.com/prod"
-    PERSON_API_URL              = "https://${data.aws_api_gateway_rest_api.eks_api.id}.execute-api.us-east-1.amazonaws.com/prod"
+    PERSON_API_URL              = "https://${data.aws_api_gateway_rest_api.eks_api.id}.execute-api.us-east-1.amazonaws.com/prod/customers"
     ORDER_DATABASE_URL          = "jdbc:postgresql://${aws_db_instance.rds_order.endpoint}/${aws_db_instance.rds_order.db_name}"
     PERSON_SERVICE_DATABASE_URL = "jdbc:postgresql://${aws_db_instance.rds_person.endpoint}/${aws_db_instance.rds_person.db_name}"
   }
